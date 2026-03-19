@@ -11,7 +11,7 @@ export default function Footer() {
         if (href.startsWith("#")) {
             e.preventDefault();
             const elementId = href.substring(1);
-            
+
             if (location.pathname !== "/") {
                 navigate("/", { state: { scrollTo: elementId } });
             } else {
@@ -22,7 +22,6 @@ export default function Footer() {
 
     return (
         <footer className="relative px-6 md:px-16 lg:px-24 xl:px-32 mt-40 w-full dark:text-slate-50">
-            <img className="absolute max-w-4xl w-full h-auto -mt-30 max-md:px-4 right-0 md:right-16 lg:right-24 xl:right-32 top-0 pointer-events-none" src={theme === "dark" ? "/assets/landing-text-dark.svg" : "/assets/landing-text-light.svg"} alt="landing" width={930} height={340} priority="high" />
             <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-200 dark:border-slate-700 pb-6">
                 <div className="md:max-w-114">
                     <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
@@ -38,8 +37,8 @@ export default function Footer() {
                         <ul className="space-y-2">
                             {navLinks.map((link, index) => (
                                 <li key={index}>
-                                    <a 
-                                        href={link.href} 
+                                    <a
+                                        href={link.href}
                                         onClick={(e) => handleNavClick(e, link.href)}
                                         className="hover:text-purple-600 transition"
                                     >

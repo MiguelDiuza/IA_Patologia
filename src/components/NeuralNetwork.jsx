@@ -58,7 +58,7 @@ export default function NeuralNetwork() {
       uPulseTimes: { value: [-1e3, -1e3, -1e3] },
       uPulseColors: { value: [new THREE.Color(1, 1, 1), new THREE.Color(1, 1, 1), new THREE.Color(1, 1, 1)] },
       uPulseSpeed: { value: 18.0 },
-      uBaseNodeSize: { value: 0.6 }
+      uBaseNodeSize: { value: 0.0 } // [ANIMACIÓN]: Inicia en 0 para aparecer gradualmente
     };
 
     const noiseFunctions = `
@@ -289,7 +289,7 @@ export default function NeuralNetwork() {
     const connMat = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.15, // [LÍNEAS] Opacidad muy delgada y sutil
+      opacity: 0.0, // [ANIMACIÓN]: Inicia en 0 para aparecer gradualmente
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -297,6 +297,9 @@ export default function NeuralNetwork() {
 
     const clock = new THREE.Clock();
     let lastPulseIndex = 0;
+    
+    // [ANIMACIÓN DE ENTRADA]: El factor "grow" controla la aparición gradual de la red
+    let growFactor = 0;
 
     const triggerAutoPulse = () => {
       const time = clock.getElapsedTime();
@@ -311,6 +314,25 @@ export default function NeuralNetwork() {
 
     const animate = () => {
       const t = clock.getElapsedTime();
+      
+      // Interpolamos el growFactor suavemente hasta 1
+      if (growFactor < 1) {
+        growFactor += 0.005; // Ajusta la velocidad de "armado" aquí (aprox 3 segundos)
+        
+        // Aplicamos un easing OutCubic para que se sienta más premium
+        const ease = 1 - Math.pow(1 - growFactor, 3);
+        
+        // Aplicamos el grow al tamaño base de los nodos (el final será 0.6)
+        pulseUniforms.uBaseNodeSize.value = ease * 0.6;
+        
+        // Aplicamos el grow a la opacidad de las conexiones (el final será 0.15)
+        connMat.opacity = ease * 0.15;
+      } else {
+        growFactor = 1;
+        pulseUniforms.uBaseNodeSize.value = 0.6;
+        connMat.opacity = 0.15;
+      }
+
       pulseUniforms.uTime.value = t;
       controls.update();
       composer.render();

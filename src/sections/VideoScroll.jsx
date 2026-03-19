@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 export function VideoScroll() {
   const containerRef = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -45,14 +45,14 @@ export function VideoScroll() {
             muted
             loop
             playsInline
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-cover"
           >
             <source
-              src="/assets/video.mp4"
+              src="/assets/Visumed.mp4"
               type="video/mp4"
             />
           </video>
-          
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
         </motion.div>
       </div>
